@@ -1,11 +1,12 @@
 import {Router} from 'express'
 import CreateUserService from '../services/CreateUserService'
+import userWithoutPassword from '../dataMapper/userWithoutPassword'
 
 const usersRouter = Router()
 
 usersRouter.post('/', async (request, response) => {
     try {
-        const { name, email, password } = request.body
+        let { name, email, password } = request.body
 
         const createUser = new CreateUserService();
 
@@ -15,11 +16,13 @@ usersRouter.post('/', async (request, response) => {
             password
         })
 
-        delete user.password
+        const datamapper = new userWithoutPassword()
 
-        return response.json(user)
+        const UserWithoutPassword = datamapper.toDTO(user)
+
+        return response.json(UserWithoutPassword)
     } catch(err) {
-        return response.status(400).json({error: err})
+        return response.status(400).json({error: err.message})
     }
 })
 
