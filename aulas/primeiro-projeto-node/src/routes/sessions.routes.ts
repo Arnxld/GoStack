@@ -12,7 +12,7 @@ sessionsRouter.post('/', async (request, response) => {
 
         const authenticateUser = new AuthenticateUserService()
 
-        let { user } = await authenticateUser.execute({
+        let { user, token } = await authenticateUser.execute({
             email,
             password
         })
@@ -22,7 +22,7 @@ sessionsRouter.post('/', async (request, response) => {
         user = dataMapper.toDTO(user)
 
 
-        return response.json({user})
+        return response.json({user, token})
     } catch(err) {
         return response.status(400).json({error: err.message})
     }
