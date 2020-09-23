@@ -40,12 +40,15 @@ usersRouter.patch('/avatar', ensureAuthenticated, upload.single('avatar'), async
     try {
         const updateUserAvatar = new UpdateUserAvatarService()
 
-        await updateUserAvatar.execute({
+        const user = await updateUserAvatar.execute({
             user_id: request.user.id,
             avatarFilename: request.file.filename
         })
 
-        return response.json({ok: true})
+        const datamapper = new userWithoutPassword()
+        const UserWithoutPassword = datamapper.toDTO(user)
+
+        return response.json(UserWithoutPassword)
     }
     catch(err) {
         return response.status(400).json({error: err.message})
