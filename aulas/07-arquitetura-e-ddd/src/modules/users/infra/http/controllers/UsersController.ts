@@ -1,7 +1,6 @@
 import { Request, Response} from 'express';
 import { container } from 'tsyringe';
-
-import userWithoutPassword from '../../../../../dataMapper/userWithoutPassword';
+import { classToClass } from 'class-transformer';
 
 import CreateUserService from '@modules/users/services/CreateUserService'
 import UpdateUserAvatarService from '@modules/users/services/UpdateUserAvatarService'
@@ -17,11 +16,7 @@ export default class UsersController{
             email,
             password
         })
-
-        const datamapper = new userWithoutPassword()
-
-        const UserWithoutPassword = datamapper.toDTO(user)
-
-        return response.json(UserWithoutPassword)
+        
+        return response.json(classToClass(user))
     }
 }

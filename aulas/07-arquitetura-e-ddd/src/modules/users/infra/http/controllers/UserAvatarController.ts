@@ -1,7 +1,7 @@
 import { Request, Response} from 'express';
 import { container } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
-import userWithoutPassword from '../../../../../dataMapper/userWithoutPassword';
 
 import UpdateUserAvatarService from '@modules/users/services/UpdateUserAvatarService'
 
@@ -14,9 +14,6 @@ export default class UserAvatarController{
             avatarFilename: request.file.filename
         })
 
-        const datamapper = new userWithoutPassword()
-        const UserWithoutPassword = datamapper.toDTO(user)
-
-        return response.json(UserWithoutPassword)
+        return response.json(classToClass(user))
     }
 }

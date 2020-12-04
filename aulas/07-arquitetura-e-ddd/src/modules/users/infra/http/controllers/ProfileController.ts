@@ -1,7 +1,6 @@
 import { Request, Response} from 'express';
 import { container } from 'tsyringe';
-
-import userWithoutPassword from '../../../../../dataMapper/userWithoutPassword';
+import { classToClass } from 'class-transformer';
 
 import UpdateProfileService from '@modules/users/services/UpdateProfileService';
 import ShowProfileService from '@modules/users/services/ShowProfileService';
@@ -15,11 +14,7 @@ export default class ProfileController{
 
         const user = await showProfile.execute({ user_id });
 
-        const datamapper = new userWithoutPassword();
-
-        const UserWithoutPassword = datamapper.toDTO(user);
-
-        return response.json(UserWithoutPassword);
+        return response.json(classToClass(user))
     }
 
 
@@ -37,10 +32,6 @@ export default class ProfileController{
             old_password,
         })
 
-        const datamapper = new userWithoutPassword()
-
-        const UserWithoutPassword = datamapper.toDTO(user)
-
-        return response.json(UserWithoutPassword)
+        return response.json(classToClass(user))
     }
 }
